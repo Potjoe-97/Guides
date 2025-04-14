@@ -80,6 +80,173 @@ Partitions @0x3100 in 3 groups:
                 Name: vendor_b (read-only,  empty) - extracted
 ```
 
-...
 
-(Due to length limits, the full content will be written to the file.)
+We can see here that the `super` image:
+
+*   Has 3 slots: `default`, `main_a`, and `main_b`
+*   `main_a` and `main_b` each contain 3 partitions: `product`, `system`, and `vendor`
+*   Some partitions in `main_b` are empty: `product_b` and `vendor_b`
+
+We'll work on the `main_a` slot, since it's the only complete group containing phone data.
+
+### Replace system_a with Lineage OS
+
+A new folder has appeared: `extracted`. It contains the extracted images from `super.bin`. There are 6 files, corresponding to the 6 partitions:
+
+*   product_a.img
+*   product_b.img
+*   system_a.img
+*   system_b.img
+*   vendor_a.img
+*   vendor_b.img
+
+We want to replace the system partition with the Lineage OS ROM, remember? In the `extracted` folder, delete `system_a.img` (since we determined that slot _a_ is the complete one), and move the Lineage OS 20 ROM into the folder.
+
+> [!WARNING]
+> Make sure to extract the downloaded Lineage OS archive: the file extension must be .img, not .img.gz
+
+Then rename the ROM to “system_a.img”. At this point, we've replaced the system partition with Lineage OS, and we just need to rebuild the flashable partition `super_new.img`.
+
+### Build the new super_new.img
+
+To do this, we need to rebuild it identically to the original image, as its size must match the phone’s partition.
+
+*   In the Debian terminal, navigate to the backup folder.
+*   Note the image size with the command:
+
+```
+stat -c '%n %s' super.bin
+```
+
+Result:
+
+```
+super.bin 10468982784
+```
+
+The size of my original image is `10468982784` (yours may differ!).
+
+Do the same for all new images:
+
+*   In the Debian terminal, go to the “extracted” folder
+*   Check the size of the different images with:
+
+```
+stat -c '%n %s' *.img
+```
+
+Result:
+
+```
+product_a.img 1101447168
+...
+```
+
+Now rebuild the image using lpmake. Before launching the command, make sure to adjust each partition’s size as shown below:
+
+```
+$ lpmake --metadata-size 65536 --metadata-slots=3 ...
+ --sparse --output ./super_new.img
+```
+
+⚠️ The numbers in this example are **not universally valid**. I recommend preparing the command in Wordpad, then running it. Adjust all numbers to your image sizes.
+
+*   `--metadata-slots`: Must match the number of slots on the device.
+*   `--device super`: The size of the `super` partition on the device.
+*   `--group main_a`: Sum of all partition file sizes in group main_a.
+*   `--partition`: File sizes with permission (`readonly`).
+*   `--image`: Path to each partition image, except empty ones.
+
+Run the command and be patient. If you get an error, grab a coffee and wait.
+
+You should now have a new `super_new.img` file in the extracted folder.
+
+## Flash the phone
+
+### Unlock bootloader & flash
+
+First, unlock the phone’s bootloader.
+
+*   On the phone, go to Settings, enable Developer Options. Then enable USB Debugging.
+*   Connect the phone via USB. In a Windows terminal, run:
+
+```
+adb reboot fastboot
+```
+
+This will boot the phone into fastboot mode.
+
+*   On the phone, select “Reboot to bootloader” and validate.
+*   Then run:
+
+```
+fastboot flashing unlock
+```
+
+*   On the phone, press “Volume Up” to confirm. Your bootloader should now be unlocked.
+
+You can now flash the image we built earlier:
+
+```
+fastboot flash super super_new.img
+```
+
+Then:
+
+```
+fastboot reboot
+```
+
+ET VOILA! You flashed your Custom GSI ROM to your Doov R17 Pro!
+
+> [!WARNING]
+> **DO NOT RELOCK THE BOOTLOADER** after flashing or you will get a dm-verity corruption warning.
+
+## Root with Magisk (optional)
+
+Re-enable Developer Options & USB Debugging in Lineage OS.
+
+In the Windows terminal, in the folder where you downloaded the Magisk apk, run:
+
+```
+adb install Magisk-v28.1.apk
+```
+
+Then follow the official Magisk install instructions: [Installation | Magisk](https://topjohnwu.github.io/Magisk/install.html). Grab your boot.img from the backup folder and upload it to the phone, then patch it with Magisk.
+
+If you have boot_a.bin and boot_b.bin, upload `boot_a.bin`.
+
+Since the phone has no recovery partition, and patching init_boot didn't work, I only patched and flashed the boot partition. Make sure to flash the patched image to `boot_a`, like this:
+
+```
+fastboot flash boot_a /path/to/magisk_patched_[random_strings].img
+```
+
+I didn’t flash `vbmeta`; maybe you should? I don’t know! It worked for me by only flashing `boot_a`.
+
+Don’t forget to:
+
+```
+fastboot reboot
+```
+
+at the end of the process.
+
+## Lineage OS settings
+
+*   Go to Settings > Phh Treble Settings > Misc features
+    *   Enable "Rotation perf hint instead of touch"
+    *   Enable “Mediatek GED Kpi support”
+    *   To disable navbar & gestures (for keypad + touch navigation only), enable “Force navigation bar disabled”
+*   Go to Settings > Phh Treble Settings > IMS features. Emergency calls didn't work without these options for me.
+    *   Click “Create IMS APN”
+    *   Click “Install IMS APK for Mediatek S vendor”
+    *   Enable Request IMS network
+
+## Credits & sources
+
+[🤔 binboupan's blog | Taking Control of the Xiaomi Qin F22 Pro](https://binboupan.github.io/2023/08/qin-f22-pro/)
+
+[Patching Dynamic Partitions in Android Super Image · senyuuri's blog](https://blog.senyuuri.info/posts/2022-04-27-patching-android-super-images/)
+
+[android_device_Unihertz_Atom_LXL/docs/HOW-TO-FLASH-SUPER.md at master · ADeadTrousers/android_device_Unihertz_Atom_LXL](https://github.com/ADeadTrousers/android_device_Unihertz_Atom_LXL/blob/master/docs/HOW-TO-FLASH-SUPER.md)

@@ -255,7 +255,7 @@ Don’t forget to:
 fastboot reboot
 ```
 
-after flashing, then resume with magisk instructions.
+after flashing, then get back to magisk instructions.
 
 ## Lineage OS settings
 

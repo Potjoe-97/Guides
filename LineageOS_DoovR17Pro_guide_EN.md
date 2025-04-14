@@ -277,6 +277,8 @@ after flashing, then get back to magisk instructions.
 
 [🤔 binboupan's blog | Taking Control of the Xiaomi Qin F22 Pro](https://binboupan.github.io/2023/08/qin-f22-pro/)
 
+[🤔 binboupan's blog | Installing GSI ROMs on the Xiaomi Qin F22 Pro](https://binboupan.github.io/2023/12/qin-f22-pro-gsi/)
+
 [Patching Dynamic Partitions in Android Super Image · senyuuri's blog](https://blog.senyuuri.info/posts/2022-04-27-patching-android-super-images/)
 
 [android_device_Unihertz_Atom_LXL/docs/HOW-TO-FLASH-SUPER.md at master · ADeadTrousers/android_device_Unihertz_Atom_LXL](https://github.com/ADeadTrousers/android_device_Unihertz_Atom_LXL/blob/master/docs/HOW-TO-FLASH-SUPER.md)

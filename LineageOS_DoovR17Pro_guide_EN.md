@@ -46,7 +46,7 @@ To flash a phone, you need to replace the original `system` partition with the L
 *   The Doov R17 Pro uses A/B partitioning (so there are two system partitions, `system_a` and `system_b`)  
 *   Both system partitions are contained within a single `super` partition.
 
-You cannot flash Lineage OS directly over a system partition that's embedded inside a `super` partition. So we must rebuild the `super` partition to include the Lineage OS ROM, then flash the entire `super` partition. The tools we’ll use are `imjtool`, `lpunpack`, and `lpmake`.
+You cannot flash Lineage OS directly over a system partition that's embedded inside a `super` partition. So we must rebuild the `super` partition to include the Lineage OS ROM, then flash the entire `super` partition. The tools we’ll use are `imjtool`, `lpunpack` (optional), and `lpmake`.
 
 ### Extract the super partition
 

@@ -267,6 +267,11 @@ at the end of the process.
     *   Click “Create IMS APN”
     *   Click “Install IMS APK for Mediatek S vendor”
     *   Enable Request IMS network
+*   For t9 typing, I recommend installing TT9 from the playstore.
+*   I recommend Button mapper with following parameters :
+    *   To enable the D-pad center button, assign "One Click" to "D-Pad Center"
+    *   To enable Call button, assign "One Click" to "Personalized keycode 5"
+    *   To enable Star button (useful for tt9)  assign "One Click" to "Personalized keycode 17"
 
 ## Credits & sources
 

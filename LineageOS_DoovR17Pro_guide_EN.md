@@ -1,7 +1,7 @@
 
 ## Disclaimer
 
-I'm not an engineer, I do not take responsibility for bricked devices, I barely understand what I'm doing. Take this tutorial as a testimony of my own (successful) experience. I do not guarantee I'll be able to answer your questions either.
+I'm not an engineer, I do not take responsibility for bricked devices, I barely understand what I'm doing. Take this tutorial as a testimony of my own (successful) experience. I do not guarantee I'll be able to answer your questions either. Use at your own risks. 
 
 ## Prerequisites
 

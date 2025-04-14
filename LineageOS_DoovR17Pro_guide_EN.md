@@ -174,7 +174,7 @@ lpmake --metadata-size 65536\
 *   `--group main_a`: Sum of all partition file sizes in group main_a. Eg: product_a + system_a + vendor_a = 1101447168 + 2806325248 + 404115456 = 4311887872
 *   `--group main_b`: Sum of all partition file sizes in group main_b.
 *   `--partition`: File sizes with permission (`readonly`).  Adjust file sizes with results you got from last step.
-*   `--image`: Path to each partition image, except empty ones. In our case, no vendor_b.img or product_b, seems we know they are empty. 
+*   `--image`: Path to each partition image, except empty ones. In our case, no vendor_b.img or product_b, we know they are empty. 
 
 Run the command and be patient. If you get a header magic error, grab a coffee and wait.
 

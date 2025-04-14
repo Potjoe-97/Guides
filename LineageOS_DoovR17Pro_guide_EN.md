@@ -105,7 +105,7 @@ We want to replace the system partition with the Lineage OS ROM, remember? In th
 > [!WARNING]
 > Make sure to extract the downloaded Lineage OS archive: the file extension must be .img, not .img.gz
 
-Then rename the ROM to “system_a.img”. At this point, we've replaced the system partition with Lineage OS, and we just need to rebuild the flashable partition `super_new.img`.
+Then rename the lineage OS ROM to “system_a.img”. At this point, we've replaced the system partition with Lineage OS, and we just need to rebuild the flashable partition `super_new.img`.
 
 ### Build the new super_new.img
 
@@ -139,13 +139,31 @@ Result:
 
 ```
 product_a.img 1101447168
-...
+product_b.img 0
+system_a.img 2806325248
+system_b.img 147349504
+vendor_a.img 404115456
+vendor_b.img 0
 ```
 
 Now rebuild the image using lpmake. Before launching the command, make sure to adjust each partition’s size as shown below:
 
 ```
-$ lpmake --metadata-size 65536 --metadata-slots=3 ...
+lpmake --metadata-size 65536\
+ --metadata-slots=3\
+ --device super:10468982784\
+ --group=main_a:4311887872\
+ --group=main_b:147349504\
+ --partition=product_a:readonly:1101447168:main_a\
+ --partition=product_b:readonly:0:main_b\
+ --partition=system_a:readonly:2806325248:main_a\
+ --partition=system_b:readonly:147349504:main_b\
+ --partition=vendor_a:readonly:404115456:main_a\
+ --partition=vendor_b:readonly:0:main_b\
+ --image=product_a=product_a.img\
+ --image=system_a=system_a.img\
+ --image=system_b=system_b.img\
+ --image=vendor_a=vendor_a.img\
  --sparse --output ./super_new.img
 ```
 

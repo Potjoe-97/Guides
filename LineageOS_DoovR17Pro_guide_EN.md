@@ -146,7 +146,7 @@ vendor_a.img 404115456
 vendor_b.img 0
 ```
 
-Now rebuild the image using lpmake. Before launching the command, make sure to adjust each partition’s size as shown below:
+Now rebuild the image using lpmake. Before launching the command, make sure to adjust each device/group/partition’s size as shown below:
 
 ```
 lpmake --metadata-size 65536\

@@ -56,7 +56,7 @@ You cannot flash Lineage OS directly over a system partition that's embedded ins
 cd "/mnt/c/Users/potjoe/git/mtkclient"
 ```
 
-*   Extract the `super` partition & get information about its structure with imjtool. In my case, imjtool is located in the mtkclient folder:
+*   Extract the `super` partition & get information about its structure with `imjtool`. In my case, `imjtool` is located in the mtkclient folder:
 
 ```
 ./imjtool.ELF64 backup/super.bin extract

@@ -222,7 +222,7 @@ Then:
 fastboot reboot
 ```
 
-ET VOILA! You flashed your Custom GSI ROM to your Doov R17 Pro!
+ET VOILA! You flashed a Custom GSI ROM to your Doov R17 Pro!
 
 > [!WARNING]
 > **DO NOT RELOCK THE BOOTLOADER** after flashing or you will get a dm-verity corruption warning.

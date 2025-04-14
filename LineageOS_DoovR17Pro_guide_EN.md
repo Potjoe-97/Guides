@@ -169,15 +169,16 @@ lpmake --metadata-size 65536\
 
 ⚠️ The numbers in this example are **not universally valid**. I recommend preparing the command in Wordpad, then running it. Adjust all numbers to your image sizes.
 
-*   `--metadata-slots`: Must match the number of slots on the device.
-*   `--device super`: The size of the `super` partition on the device.
-*   `--group main_a`: Sum of all partition file sizes in group main_a.
-*   `--partition`: File sizes with permission (`readonly`).
-*   `--image`: Path to each partition image, except empty ones.
+*   `--metadata-slots`: Must match the number of slots on the device. We had this number thanks to imjtool 
+*   `--device super`: The size of the `super` partition on the device. It must match exactly: in our case, '10468982784'.
+*   `--group main_a`: Sum of all partition file sizes in group main_a. Eg: product_a + system_a + vendor_a = 1101447168 + 2806325248 + 404115456 = 4311887872
+*   `--group main_b`: Sum of all partition file sizes in group main_b.
+*   `--partition`: File sizes with permission (`readonly`).  Adjust file sizes with results you got from last step.
+*   `--image`: Path to each partition image, except empty ones. In our case, no vendor_b.img or product_b, seems we know they are empty. 
 
-Run the command and be patient. If you get an error, grab a coffee and wait.
+Run the command and be patient. If you get a header magic error, grab a coffee and wait.
 
-You should now have a new `super_new.img` file in the extracted folder.
+You should now have a new `super_new.img` file in the 'extracted' folder.
 
 ## Flash the phone
 
@@ -194,7 +195,7 @@ adb reboot fastboot
 
 This will boot the phone into fastboot mode.
 
-*   On the phone, select “Reboot to bootloader” and validate.
+*   On the phone, select “Reboot to bootloader” and click the endcall key to validate. You should see “=> FASTBOOT mode…”
 *   Then run:
 
 ```
@@ -202,6 +203,12 @@ fastboot flashing unlock
 ```
 
 *   On the phone, press “Volume Up” to confirm. Your bootloader should now be unlocked.
+*   Reboot to fastboot again, running :
+
+```
+fastboot reboot fastboot
+```
+*   Select “Reboot to bootloader” and click the endcall key to validate. You should see “=> FASTBOOT mode…”
 
 You can now flash the image we built earlier:
 
